@@ -17,7 +17,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
   useEffect(() => {
     if (gameState?.scores) {
       const currentPlayerScore = gameState.scores.find(s => s.playerId === playerId);
-      if (currentPlayerScore?.isResetted && currentPlayerScore.isResetted !== lastResetState) {
+      if (currentPlayerScore?.isResetted && !lastResetState) {
         setShowTrapAnimation(true);
         toast({
           title: "💣 トラップ発動！",
@@ -30,11 +30,13 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
 
         setTimeout(() => {
           setShowTrapAnimation(false);
+          setLastResetState(true);
         }, 1500);
+      } else if (!currentPlayerScore?.isResetted) {
+        setLastResetState(false);
       }
-      setLastResetState(currentPlayerScore?.isResetted ?? false);
     }
-  }, [gameState?.scores, playerId, lastResetState, toast]);
+  }, [gameState?.scores, playerId, lastResetState]);
 
   if (!gameState || !gameState.scores) {
     return <Box>ゲームをロード中...</Box>;
