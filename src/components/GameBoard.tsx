@@ -43,7 +43,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
   const isMyTurn = gameState.currentTurn === playerId;
   const playerScore = gameState.scores.find(s => s.playerId === playerId);
   const opponentScore = gameState.scores.find(s => s.playerId !== playerId);
-  const isFirstPlayer = gameState.currentTurn === playerId && gameState.status === 'SETTING_TRAP';
+  const isFirstPlayer = gameState.player1.id === playerId;
 
   const handleSeatClick = (seatNumber: number) => {
     if (!isMyTurn) return;
