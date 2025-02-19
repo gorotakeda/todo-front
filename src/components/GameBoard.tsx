@@ -17,7 +17,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
   useEffect(() => {
     if (gameState?.scores) {
       const currentPlayerScore = gameState.scores.find(s => s.playerId === playerId);
-      if (currentPlayerScore?.isResetted && !lastResetState) {
+      if (currentPlayerScore?.isResetted && currentPlayerScore.isResetted !== lastResetState) {
         setShowTrapAnimation(true);
         toast({
           title: "💣 トラップ発動！",
