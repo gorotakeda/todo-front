@@ -1,25 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
+import { ChakraProvider } from '@chakra-ui/react';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { GameBoard } from './components/GameBoard';
 import './App.css';
+import { Home } from './components/Home';
+import { useGame } from './hooks/useGame';
+import { useAuth } from './hooks/useAuth';
+const GameBoardWrapper = () => {
+  const { gameId } = useParams();
+  const { playerId } = useAuth();
+  useGame(gameId ?? '', playerId ?? '');
+
+  if (!gameId || !playerId) return null;
+
+  return <GameBoard gameId={gameId} playerId={playerId} />;
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/game/:gameId" element={<GameBoardWrapper />} />
+        </Routes>
+      </Router>
+    </ChakraProvider>
   );
 }
 
