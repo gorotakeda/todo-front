@@ -53,6 +53,8 @@ export const useGame = (gameId: string, playerId: string) => {
         body: JSON.stringify({ playerId, seatNumber }),
       });
       if (!response.ok) throw new Error('トラップの設置に失敗しました');
+      const data = await response.json();
+      setGameState(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
     }
@@ -66,6 +68,8 @@ export const useGame = (gameId: string, playerId: string) => {
         body: JSON.stringify({ playerId, seatNumber }),
       });
       if (!response.ok) throw new Error('座席の選択に失敗しました');
+      const data = await response.json();
+      setGameState(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
     }

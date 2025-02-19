@@ -36,7 +36,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
     }
   }, [gameState?.scores, playerId, lastResetState, toast]);
 
-  if (!gameState) {
+  if (!gameState || !gameState.scores) {
     return <Box>ゲームをロード中...</Box>;
   }
 
