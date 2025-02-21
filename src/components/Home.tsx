@@ -85,7 +85,6 @@ export const Home: React.FC = () => {
           onChange={(e) => setOpponent(e.target.value)}
           width="200px"
         >
-          <option value="cpu" hidden={true}>CPU対戦</option>
           <option value="friend">フレンド対戦</option>
         </Select>
         <Button
