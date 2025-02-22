@@ -47,10 +47,22 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
   const opponentScore = gameState.scores.find(s => s.playerId !== playerId);
   const isFirstPlayer = gameState.player1.id === playerId;
 
-  const handleSeatClick = (seatNumber: number) => {
+  const handleSeatClick = async (seatNumber: number) => {
     if (!isMyTurn) return;
 
     setSelectedSeat(seatNumber);
+
+    const message = gameState.status === 'SETTING_TRAP'
+      ? `${seatNumber}番の席にトラップを仕掛けますか？`
+      : `${seatNumber}番の席を選択しますか？`;
+
+    const isConfirmed = window.confirm(message);
+
+    if (!isConfirmed) {
+      setSelectedSeat(null);
+      return;
+    }
+
     if (gameState.status === 'SETTING_TRAP') {
       setTrap(seatNumber);
     } else if (gameState.status === 'IN_PROGRESS') {
