@@ -132,18 +132,40 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
             {getGameStateMessage()}
           </Text>
 
-          <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-            {gameState.availableSeats.map((seat) => (
-              <Button
-                key={seat}
-                size="lg"
-                onClick={() => handleSeatClick(seat)}
-                disabled={!isMyTurn}
-              >
-                {seat}
-              </Button>
-            ))}
-          </Grid>
+          <Box position="relative" w="300px" h="300px" margin="0 auto">
+            {gameState.availableSeats
+              .map((seat, i) => ({ seat, originalIndex: i }))
+              .sort((a, b) => {
+                // 12を最初に持ってくる
+                if (a.seat === 12) return -1;
+                if (b.seat === 12) return 1;
+                return a.seat - b.seat;
+              })
+              .map(({ seat }, index) => {
+                const angle = (index * (360 / gameState.availableSeats.length)) - 90; // -90度で12時の位置から開始
+                const radius = 120; // 円の半径（px）
+                const x = radius * Math.cos((angle * Math.PI) / 180);
+                const y = radius * Math.sin((angle * Math.PI) / 180);
+
+                return (
+                  <Button
+                    key={seat}
+                    size="lg"
+                    onClick={() => handleSeatClick(seat)}
+                    disabled={!isMyTurn}
+                    borderRadius="full"
+                    position="absolute"
+                    transform={`translate(${x}px, ${y}px)`}
+                    left="50%"
+                    top="50%"
+                    width="60px"
+                    height="60px"
+                  >
+                    {seat}
+                  </Button>
+                );
+              })}
+          </Box>
 
           {gameState.status === 'FINISHED' && (
             <Text fontSize="2xl" fontWeight="bold">
