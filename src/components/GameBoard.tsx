@@ -137,7 +137,6 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
               <Button
                 key={seat}
                 size="lg"
-                colorScheme={selectedSeat === seat ? 'blue' : 'gray'}
                 onClick={() => handleSeatClick(seat)}
                 disabled={!isMyTurn}
               >
