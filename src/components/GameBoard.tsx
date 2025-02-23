@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, Button, Text, VStack, HStack, useToast } from '@chakra-ui/react';
+import { Box, Button, Text, VStack, HStack, useToast } from '@chakra-ui/react';
 import { useGame } from '../hooks/useGame';
 
 interface GameBoardProps {
