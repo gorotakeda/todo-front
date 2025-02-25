@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, VStack, Button, Text, useToast, Select, Input } from '@chakra-ui/react';
+import { Box, VStack, Button, Text, useToast, Select, Input, Container } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
@@ -77,41 +77,62 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <Box p={6}>
-      <VStack gap={6}>
-        <Text fontSize="2xl">席取り合戦</Text>
-        <Select
-          value={opponent}
-          onChange={(e) => setOpponent(e.target.value)}
-          width="200px"
-        >
-          <option value="friend">フレンド対戦</option>
-        </Select>
-        <Button
-          onClick={handleCreateGame}
-          isLoading={isLoading}
-          loadingText="作成中..."
-          isDisabled={!playerId}
-        >
-          新しいゲームを作成
-        </Button>
+    <Container maxW={{ base: '95%', md: '600px' }} centerContent>
+      <Box
+        w="100%"
+        p={{ base: 4, md: 6 }}
+        mt={{ base: 4, md: 8 }}
+      >
+        <VStack gap={{ base: 4, md: 6 }}>
+          <Text
+            fontSize={{ base: "xl", md: "2xl" }}
+            fontWeight="bold"
+          >
+            席取り合戦
+          </Text>
 
-        <Text>または</Text>
+          <Select
+            value={opponent}
+            onChange={(e) => setOpponent(e.target.value)}
+            width={{ base: "100%", md: "200px" }}
+            size={{ base: "md", md: "lg" }}
+          >
+            <option value="friend">フレンド対戦</option>
+          </Select>
 
-        <Input
-          placeholder="ゲームIDを入力"
-          value={gameId}
-          onChange={(e) => setGameId(e.target.value)}
-        />
-        <Button
-          colorScheme="green"
-          onClick={handleJoinGame}
-          isLoading={isLoading}
-          isDisabled={!gameId}
-        >
-          ゲームに参加
-        </Button>
-      </VStack>
-    </Box>
+          <Button
+            onClick={handleCreateGame}
+            isLoading={isLoading}
+            loadingText="作成中..."
+            isDisabled={!playerId}
+            w={{ base: "100%", md: "auto" }}
+            size={{ base: "md", md: "lg" }}
+          >
+            新しいゲームを作成
+          </Button>
+
+          <Text fontSize={{ base: "md", md: "lg" }}>または</Text>
+
+          <Input
+            placeholder="ゲームIDを入力"
+            value={gameId}
+            onChange={(e) => setGameId(e.target.value)}
+            size={{ base: "md", md: "lg" }}
+            w="100%"
+          />
+
+          <Button
+            colorScheme="green"
+            onClick={handleJoinGame}
+            isLoading={isLoading}
+            isDisabled={!gameId}
+            w={{ base: "100%", md: "auto" }}
+            size={{ base: "md", md: "lg" }}
+          >
+            ゲームに参加
+          </Button>
+        </VStack>
+      </Box>
+    </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Text, VStack, HStack, useToast } from '@chakra-ui/react';
+import { Box, Button, Text, VStack, HStack, useToast, Container } from '@chakra-ui/react';
 import { useGame } from '../hooks/useGame';
 
 interface GameBoardProps {
@@ -85,102 +85,138 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
   };
 
   return (
-    <VStack spacing={4} align="stretch">
-      {showTrapAnimation && (
-        <Box
-          position="fixed"
-          top={0}
-          left={0}
-          right={0}
-          bottom={0}
-          bg="rgba(255, 0, 0, 0.3)"
-          zIndex={999}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          animation="shake 0.5s"
-        >
-          <Text
-            fontSize="6xl"
-            color="red.500"
-            fontWeight="bold"
-            textShadow="2px 2px 4px rgba(0,0,0,0.5)"
+    <Container maxW={{ base: '95%', md: '800px' }} p={{ base: 2, md: 4 }}>
+      <VStack spacing={{ base: 3, md: 4 }} align="stretch">
+        {showTrapAnimation && (
+          <Box
+            position="fixed"
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            bg="rgba(255, 0, 0, 0.3)"
+            zIndex={999}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            animation="shake 0.5s"
           >
-            💣 トラップ発動！
-          </Text>
-        </Box>
-      )}
-
-      <Box p={6}>
-        <VStack gap={6}>
-          <Text fontSize="lg" color="blue.600">
-            あなたは{isFirstPlayer ? 'プレイヤー1（先攻）' : 'プレイヤー2（後攻）'}です
-          </Text>
-
-          <HStack justify="space-between" w="100%">
-            <Box>
-              <Text>あなたのスコア: {playerScore?.score ?? 0}</Text>
-              <Text>失敗回数: {playerScore?.failures ?? 0}</Text>
-            </Box>
-            <Box>
-              <Text>相手のスコア: {opponentScore?.score ?? 0}</Text>
-              <Text>失敗回数: {opponentScore?.failures ?? 0}</Text>
-            </Box>
-          </HStack>
-
-          <Text fontSize="xl" color={isMyTurn ? 'green.500' : 'red.500'}>
-            {getGameStateMessage()}
-          </Text>
-
-          <Box position="relative" w="300px" h="300px" margin="0 auto">
-            {gameState.availableSeats
-              .map((seat, i) => ({ seat, originalIndex: i }))
-              .sort((a, b) => {
-                // 12を最初に持ってくる
-                if (a.seat === 12) return -1;
-                if (b.seat === 12) return 1;
-                return a.seat - b.seat;
-              })
-              .map(({ seat }, index) => {
-                const angle = (index * (360 / gameState.availableSeats.length)) - 90; // -90度で12時の位置から開始
-                const radius = 120; // 円の半径（px）
-                const x = radius * Math.cos((angle * Math.PI) / 180);
-                const y = radius * Math.sin((angle * Math.PI) / 180);
-
-                return (
-                  <Button
-                    key={seat}
-                    size="lg"
-                    onClick={() => handleSeatClick(seat)}
-                    disabled={!isMyTurn}
-                    borderRadius="full"
-                    position="absolute"
-                    transform={`translate(${x}px, ${y}px)`}
-                    left="50%"
-                    top="50%"
-                    width="60px"
-                    height="60px"
-                  >
-                    {seat}
-                  </Button>
-                );
-              })}
+            <Text
+              fontSize={{ base: '4xl', md: '6xl' }}
+              color="red.500"
+              fontWeight="bold"
+              textShadow="2px 2px 4px rgba(0,0,0,0.5)"
+            >
+              💣 トラップ発動！
+            </Text>
           </Box>
+        )}
 
-          {gameState.status === 'FINISHED' && (
-            <Text fontSize="2xl" fontWeight="bold">
-              {gameState.winner?.id === playerId ? '勝利！' : '敗北...'}
+        <Box p={{ base: 3, md: 6 }}>
+          <VStack gap={{ base: 4, md: 6 }}>
+            <Text
+              fontSize={{ base: 'md', md: 'lg' }}
+              color="blue.600"
+              textAlign="center"
+            >
+              あなたは{isFirstPlayer ? 'プレイヤー1（先攻）' : 'プレイヤー2（後攻）'}です
             </Text>
-          )}
 
-          {error && (
-            <Text color="red.500">
-              エラーが発生しました: {error}
+            <HStack
+              justify="space-between"
+              w="100%"
+              flexDir={{ base: 'column', md: 'row' }}
+              gap={{ base: 2, md: 0 }}
+            >
+              <Box textAlign={{ base: 'center', md: 'left' }}>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  あなたのスコア: {playerScore?.score ?? 0}
+                </Text>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  失敗回数: {playerScore?.failures ?? 0}
+                </Text>
+              </Box>
+              <Box textAlign={{ base: 'center', md: 'right' }}>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  相手のスコア: {opponentScore?.score ?? 0}
+                </Text>
+                <Text fontSize={{ base: 'sm', md: 'md' }}>
+                  失敗回数: {opponentScore?.failures ?? 0}
+                </Text>
+              </Box>
+            </HStack>
+
+            <Text
+              fontSize={{ base: 'lg', md: 'xl' }}
+              color={isMyTurn ? 'green.500' : 'red.500'}
+              textAlign="center"
+            >
+              {getGameStateMessage()}
             </Text>
-          )}
-        </VStack>
-      </Box>
-    </VStack>
+
+            <Box
+              position="relative"
+              w={{ base: '280px', md: '300px' }}
+              h={{ base: '280px', md: '300px' }}
+              margin="0 auto"
+            >
+              {gameState.availableSeats
+                .map((seat, i) => ({ seat, originalIndex: i }))
+                .sort((a, b) => {
+                  if (a.seat === 12) return -1;
+                  if (b.seat === 12) return 1;
+                  return a.seat - b.seat;
+                })
+                .map(({ seat }, index) => {
+                  const angle = (index * (360 / gameState.availableSeats.length)) - 90;
+                  const radius = window.innerWidth < 768 ? 110 : 120;
+                  const x = radius * Math.cos((angle * Math.PI) / 180);
+                  const y = radius * Math.sin((angle * Math.PI) / 180);
+
+                  return (
+                    <Button
+                      key={seat}
+                      size={{ base: 'md', md: 'lg' }}
+                      onClick={() => handleSeatClick(seat)}
+                      disabled={!isMyTurn}
+                      borderRadius="full"
+                      position="absolute"
+                      transform={`translate(${x}px, ${y}px)`}
+                      left="50%"
+                      top="50%"
+                      width={{ base: '50px', md: '60px' }}
+                      height={{ base: '50px', md: '60px' }}
+                      fontSize={{ base: 'sm', md: 'md' }}
+                    >
+                      {seat}
+                    </Button>
+                  );
+                })}
+            </Box>
+
+            {gameState.status === 'FINISHED' && (
+              <Text
+                fontSize={{ base: 'xl', md: '2xl' }}
+                fontWeight="bold"
+                textAlign="center"
+              >
+                {gameState.winner?.id === playerId ? '勝利！' : '敗北...'}
+              </Text>
+            )}
+
+            {error && (
+              <Text
+                color="red.500"
+                fontSize={{ base: 'sm', md: 'md' }}
+                textAlign="center"
+              >
+                エラーが発生しました: {error}
+              </Text>
+            )}
+          </VStack>
+        </Box>
+      </VStack>
+    </Container>
   );
 };
 
