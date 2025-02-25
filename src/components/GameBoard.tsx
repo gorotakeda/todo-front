@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Text, VStack, HStack, useToast, Container } from '@chakra-ui/react';
 import { useGame } from '../hooks/useGame';
+import { useNavigate } from 'react-router-dom';
 
 interface GameBoardProps {
   gameId: string;
@@ -8,6 +9,7 @@ interface GameBoardProps {
 }
 
 export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
+  const navigate = useNavigate();
   const { gameState, error, setTrap, selectSeat } = useGame(gameId, playerId);
   const [selectedSeat, setSelectedSeat] = useState<number | null>(null);
   const [showTrapAnimation, setShowTrapAnimation] = useState(false);
@@ -195,13 +197,23 @@ export const GameBoard: React.FC<GameBoardProps> = ({ gameId, playerId }) => {
             </Box>
 
             {gameState.status === 'FINISHED' && (
-              <Text
-                fontSize={{ base: 'xl', md: '2xl' }}
-                fontWeight="bold"
-                textAlign="center"
-              >
-                {gameState.winner?.id === playerId ? '勝利！' : '敗北...'}
-              </Text>
+              <VStack spacing={4}>
+                <Text
+                  fontSize={{ base: 'xl', md: '2xl' }}
+                  fontWeight="bold"
+                  textAlign="center"
+                >
+                  {gameState.winner?.id === playerId ? '勝利！' : '敗北...'}
+                </Text>
+                <Button
+                  colorScheme="blue"
+                  onClick={() => navigate('/')}
+                  size={{ base: 'md', md: 'lg' }}
+                  w={{ base: "full", md: "auto" }}
+                >
+                  ホームに戻る
+                </Button>
+              </VStack>
             )}
 
             {error && (
