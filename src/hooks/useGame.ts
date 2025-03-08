@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { Game } from '../types/game';
-
-const API_URL = 'http://localhost:8000';
+import { API_URL } from '../config';
 
 export const useGame = (gameId: string, playerId: string) => {
   const [gameState, setGameState] = useState<Game | null>(null);

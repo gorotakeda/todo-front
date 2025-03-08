@@ -1,10 +1,9 @@
 import { useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
-
-const SOCKET_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+import { API_URL } from '../config';
 
 export const useGameSocket = (gameId: string) => {
-  const socket = io(SOCKET_URL, {
+  const socket = io(API_URL, {
     withCredentials: true,
     transports: ['websocket']
   });
