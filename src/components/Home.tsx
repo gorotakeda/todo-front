@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Box, VStack, Button, Text, useToast, Select, Input, Container } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { API_URL } from '../config';
 
+const API_URL = 'https://todo-back-135460268268.asia-northeast1.run.app';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();

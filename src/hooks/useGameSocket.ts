@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import io from 'socket.io-client';
-import { API_URL } from '../config';
+
+const API_URL = 'https://todo-back-135460268268.asia-northeast1.run.app';
 
 export const useGameSocket = (gameId: string) => {
   const socket = io(API_URL, {

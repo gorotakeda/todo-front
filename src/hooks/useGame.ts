@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { Game } from '../types/game';
-import { API_URL } from '../config';
+
+const API_URL = 'https://todo-back-135460268268.asia-northeast1.run.app';
 
 export const useGame = (gameId: string, playerId: string) => {
   const [gameState, setGameState] = useState<Game | null>(null);
